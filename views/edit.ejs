@@ -1,0 +1,92 @@
+<!-- views/edit.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hotel Management</title>
+  <!-- Thêm Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/home">HỆ THỐNG QUẢN LÝ KHÁCH SẠN</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/home">Trang chủ</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about">Về chúng tôi</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/contact">Liên hệ</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Đăng xuất</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container mt-5">
+    <h1>Chỉnh sửa thông tin phòng</h1>
+
+    <form action="/edit/<%= room.id %>" method="post">
+      <div class="form-group">
+        <label for="roomNumber">Số phòng</label>
+        <input type="text" class="form-control" id="roomNumber" name="roomNumber" value="<%= room.room_number %>"
+          required>
+      </div>
+
+      <div class="form-group">
+        <label for="roomType">Kiểu phòng</label>
+        <input type="text" class="form-control" id="roomType" name="roomType" value="<%= room.room_type %>" required>
+      </div>
+
+      <div class="form-group">
+        <label for="Status">Trạng thái phòng</label>
+        <input type="text" class="form-control" id="roomType" name="roomType" value="<%= room.room_type %>" required>
+      </div>
+
+      <div class="form-group">
+        <label for="price">Gía phòng</label>
+        <input type="text" class="form-control" id="price" name="price" value="<%= room.price %>" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Cập nhật </button>
+      <a href="/index" class="btn btn-primary">Quay lại</a>
+    </form>
+  </div>
+</body>
+
+<!-- Script to disable form submission if fields are empty -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('form');
+
+    form.addEventListener('submit', function (event) {
+      const roomNumber = document.getElementById('roomNumber').value.trim();
+      const roomType = document.getElementById('roomType').value.trim();
+      const Status = document.getElementById('Status').value.trim();
+      const price = document.getElementById('price').value.trim();
+
+      if (!roomNumber || !roomType || !price) {
+        event.preventDefault();
+        alert('Please fill in all fields.');
+      }
+    });
+  });
+</script>
+<!-- Bootstrap JS (Popper.js and jQuery required) -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>

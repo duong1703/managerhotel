@@ -1,0 +1,186 @@
+<!-- views/index.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hotel Management</title>
+    <!-- Thêm Bootstrap CSS -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <style>
+    /* style.css */
+    .available {
+      color: green;
+    }
+
+    .unavailable {
+      color: red;
+    }
+
+    /* Trong phần CSS của bạn */
+    .back-button {
+      float: right;
+      margin-top: 10px;
+      /* Điều chỉnh margin cho khoảng cách từ trên xuống */
+    }
+
+    .book-button {
+      color: blue;
+      /* Màu cho nút Đặt phòng */
+      background-color: yellow;
+      cursor: pointer;
+    }
+  </style>
+
+  <body>
+    <!-- views/partials/navbar.ejs -->
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="/home">HỆ THỐNG QUẢN LÝ KHÁCH SẠN</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/home">Trang chủ</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/about">Về chúng tôi</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/contact">Liên hệ</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Đăng xuất</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="centered-rectangle"></div>
+    <div class="container">
+      <h1 class="mt-4">Quản lý phòng ở</h1>
+      <a href="/home" class="back-button">Quay lại trang chủ</a>
+      <!-- Tab và Pill Navigation -->
+      <ul class="nav nav-tabs" id="myTabs">
+        <li class="nav-item">
+          <a
+            class="nav-link active"
+            id="allRoomsTab"
+            data-toggle="tab"
+            href="#allRooms"
+            >Tất cả phòng</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="addRoomTab" data-toggle="tab" href="/add"
+            >Thêm phòng</a
+          >
+        </li>
+      </ul>
+
+      <div class="tab-content mt-4">
+        <!-- Tab: All Rooms -->
+        <div class="tab-pane fade show active" id="allRooms">
+          <div class="row">
+            <% rooms.forEach(room=> { %>
+            <div class="col-md-4 mb-3">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Phòng <%= room.room_number %></h5>
+                  <li
+                    class="<%= room.status === 'available' ? 'available' : 'unavailable' %>"
+                  >
+                    Room <%= room.room_number %> - Status: <%= room.status %>
+                  </li>
+                  <p class="card-text">
+                    <strong>Kiểu phòng:</strong>
+                    <%= room.room_type %>
+                  </p>
+                  <p class="card-text">
+                    <strong>Gía phòng:</strong> VND<%= room.price %>
+                  </p>
+
+                  <a href="/edit/<%= room.id %>" class="btn btn-primary btn-sm"
+                    >Chỉnh sửa</a
+                  >
+                  <% if (room.status==='available' ) { %>
+                  <a href="/book/<%= room.id %>" class="btn btn-warning btn-sm"
+                    >Đặt phòng</a
+                  >
+                  <% } %>
+                  <a href="/delete/<%= room.id %>" class="btn btn-danger btn-sm"
+                    >Xóa</a
+                  >
+                </div>
+              </div>
+            </div>
+            <% }); %>
+          </div>
+        </div>
+
+        <!-- Tab: Add Room -->
+        <div class="tab-pane fade" id="addRoom">
+          <!-- Thêm form quản lý phòng vào đây -->
+          <form action="/add" method="post">
+            <div class="form-group">
+              <label for="room_number">Room Number:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="room_number"
+                name="room_number"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="room_type">Room Type:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="room_type"
+                name="room_type"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="price">Price:</label>
+              <input
+                type="number"
+                class="form-control"
+                id="price"
+                name="price"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-success">Add Room</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script>
+      $(document).ready(function () {
+        $("#myTabs a").click(function (e) {
+          e.preventDefault();
+          $(this).tab("show");
+        });
+      });
+    </script>
+    <!-- Thêm Bootstrap JS và Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
